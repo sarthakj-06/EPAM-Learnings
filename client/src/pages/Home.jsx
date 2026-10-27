@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Ticket, Sparkles, Star, ShieldCheck, Zap, Video, Monitor, ChevronRight } from 'lucide-react';
+import { Play, Ticket, Sparkles, Star, ShieldCheck, Zap, Video, Monitor, ChevronRight, Flame } from 'lucide-react';
 import { MovieCard } from '../components/MovieCard';
 
 export const Home = () => {
@@ -34,7 +34,7 @@ export const Home = () => {
       {featuredMovie && (
         <section style={{
           position: 'relative',
-          minHeight: '80vh',
+          minHeight: '82vh',
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
@@ -46,60 +46,78 @@ export const Home = () => {
             inset: 0,
             backgroundImage: `url(${featuredMovie.backdrop || featuredMovie.poster})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 20%',
-            filter: 'brightness(0.38) contrast(1.15)',
+            backgroundPosition: 'center 25%',
+            filter: 'brightness(0.32) contrast(1.2)',
           }} />
 
           {/* Gradients */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, #07090e 15%, rgba(7,9,14,0.7) 60%, transparent 100%)',
+            background: 'linear-gradient(90deg, #0a0d14 18%, rgba(10,13,20,0.8) 55%, rgba(10,13,20,0.3) 100%)',
           }} />
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(180deg, transparent 60%, #07090e 100%)',
+            background: 'linear-gradient(180deg, transparent 50%, #0a0d14 100%)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'radial-gradient(circle at 75% 30%, rgba(244, 63, 94, 0.15) 0%, transparent 60%)',
           }} />
 
           {/* Content */}
           <div style={{
-            maxWidth: 1300,
+            maxWidth: 1320,
             margin: '0 auto',
-            padding: '40px 24px',
+            padding: '60px 24px',
             position: 'relative',
             zIndex: 10,
             width: '100%',
           }}>
-            <div style={{ maxWidth: 650 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-                <span className="badge badge-purple">
-                  <Sparkles size={13} /> Premiere Spotlight
+            <div style={{ maxWidth: 680 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
+                <span className="badge badge-ruby">
+                  <Flame size={13} /> Premiere Spotlight
                 </span>
                 <span className="badge badge-gold">
-                  <Star size={13} fill="#fbbf24" /> {featuredMovie.rating} IMDb
+                  <Star size={13} fill="#fbbf24" strokeWidth={0} /> {featuredMovie.rating} IMDb
                 </span>
                 <span className="badge badge-cyan">
-                  {featuredMovie.formats?.[0] || 'IMAX 3D'}
+                  {featuredMovie.formats?.[0] || 'IMAX Laser 3D'}
+                </span>
+                <span style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: '#94a3b8',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  padding: '4px 10px',
+                  borderRadius: 999,
+                }}>
+                  {featuredMovie.certification || 'UA'}
                 </span>
               </div>
 
               <h1 style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                lineHeight: 1.1,
+                fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)',
+                lineHeight: 1.08,
                 fontWeight: 900,
                 color: '#fff',
-                marginBottom: 18,
+                marginBottom: 20,
                 letterSpacing: '-0.03em',
+                textShadow: '0 4px 30px rgba(0,0,0,0.8)',
               }}>
                 {featuredMovie.title}
               </h1>
 
               <p style={{
                 color: '#cbd5e1',
-                fontSize: '1.05rem',
-                lineHeight: 1.6,
+                fontSize: '1.08rem',
+                lineHeight: 1.65,
                 marginBottom: 28,
+                maxWidth: 620,
+                textShadow: '0 2px 10px rgba(0,0,0,0.6)',
               }}>
                 {featuredMovie.description}
               </p>
@@ -109,130 +127,184 @@ export const Home = () => {
                 alignItems: 'center',
                 gap: 16,
                 color: '#94a3b8',
-                fontSize: '0.9rem',
-                marginBottom: 32,
+                fontSize: '0.92rem',
+                marginBottom: 36,
+                flexWrap: 'wrap',
               }}>
-                <span><strong>Duration:</strong> {featuredMovie.duration} mins</span>
-                <span>•</span>
-                <span><strong>Genre:</strong> {featuredMovie.genre?.join(', ')}</span>
-                <span>•</span>
-                <span><strong>Director:</strong> {featuredMovie.director}</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <strong style={{ color: '#fff' }}>Runtime:</strong> {featuredMovie.duration} mins
+                </span>
+                <span style={{ color: '#475569' }}>•</span>
+                <span><strong style={{ color: '#fff' }}>Genre:</strong> {featuredMovie.genre?.join(', ')}</span>
+                <span style={{ color: '#475569' }}>•</span>
+                <span><strong style={{ color: '#fff' }}>Director:</strong> {featuredMovie.director}</span>
               </div>
 
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                <Link to={`/movie/${featuredMovie._id}`} className="btn-primary" style={{ padding: '14px 28px', fontSize: '1rem' }}>
-                  <Ticket size={18} />
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                <Link to={`/movie/${featuredMovie._id}`} className="btn-primary" style={{ padding: '15px 32px', fontSize: '1.05rem', fontWeight: 700 }}>
+                  <Ticket size={20} />
                   <span>Reserve Seats Now</span>
                 </Link>
-                <a
-                  href={featuredMovie.trailerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary"
-                  style={{ padding: '14px 24px', fontSize: '1rem' }}
-                >
-                  <Play size={18} fill="currentColor" />
-                  <span>Watch Trailer</span>
-                </a>
+                {featuredMovie.trailerUrl && (
+                  <a
+                    href={featuredMovie.trailerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary"
+                    style={{ padding: '15px 26px', fontSize: '1.05rem', fontWeight: 600 }}
+                  >
+                    <Play size={18} fill="currentColor" />
+                    <span>Watch Trailer</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>
         </section>
       )}
 
-      {/* Live Feature Highlights Bar */}
+      {/* Feature Highlights Bar */}
       <div style={{
-        maxWidth: 1200,
-        margin: '-30px auto 50px',
+        maxWidth: 1280,
+        margin: '-35px auto 60px',
         position: 'relative',
         zIndex: 20,
         padding: '0 20px',
       }}>
-        <div className="glass-panel" style={{
-          padding: '24px 32px',
+        <div className="glass-panel-elevated" style={{
+          padding: '26px 32px',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: 20,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+          gap: 24,
+          background: 'rgba(16, 22, 34, 0.85)',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ padding: 10, borderRadius: 12, background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(234, 88, 12, 0.1) 100%)',
+              border: '1px solid rgba(244, 63, 94, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#f43f5e',
+              flexShrink: 0,
+            }}>
               <Zap size={22} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Live Seat Locking</div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Real-time Socket.io engine</div>
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#f8fafc' }}>Live Seat Allocation</div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>Real-time Socket.io hold engine</div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ padding: 10, borderRadius: 12, background: 'rgba(6, 182, 212, 0.15)', color: '#38bdf8' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(2, 132, 199, 0.1) 100%)',
+              border: '1px solid rgba(14, 165, 233, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#38bdf8',
+              flexShrink: 0,
+            }}>
               <Monitor size={22} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>IMAX Laser & Atmos</div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>64-Channel spatial sound</div>
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#f8fafc' }}>IMAX Laser & Atmos</div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>64-Channel spatial soundscape</div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ padding: 10, borderRadius: 12, background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.1) 100%)',
+              border: '1px solid rgba(245, 158, 11, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fbbf24',
+              flexShrink: 0,
+            }}>
               <Video size={22} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Instant QR Pass</div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Contactless cinema entry</div>
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#f8fafc' }}>Instant QR Pass</div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>Contactless digital entry verification</div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ padding: 10, borderRadius: 12, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.1) 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#34d399',
+              flexShrink: 0,
+            }}>
               <ShieldCheck size={22} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Zero-Fee Cancellation</div>
-              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Instant wallet & card refunds</div>
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#f8fafc' }}>Zero-Fuss Cancellation</div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>Automated 85% instant refund</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Movies Grid Section */}
-      <section style={{ maxWidth: 1300, margin: '0 auto', padding: '0 24px' }}>
+      <section style={{ maxWidth: 1320, margin: '0 auto', padding: '0 24px' }}>
         <div style={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'space-between',
-          marginBottom: 30,
+          marginBottom: 36,
           flexWrap: 'wrap',
-          gap: 16,
+          gap: 20,
         }}>
           <div>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#fff' }}>
-              Explore Blockbusters
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#f43f5e', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              <Sparkles size={14} /> Curated Movie Collection
+            </div>
+            <h2 style={{ fontSize: '2.3rem', fontWeight: 900, color: '#fff', marginTop: 4, letterSpacing: '-0.025em' }}>
+              Current & Upcoming Blockbusters
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginTop: 4 }}>
-              Select your favorite movie, view showtimes, and book VIP recliner seats
+            <p style={{ color: '#94a3b8', fontSize: '0.98rem', marginTop: 4 }}>
+              Select your showtime, choose preferred seats on our interactive cinema map, and book seamlessly.
             </p>
           </div>
 
-          {/* Tab Filter */}
+          {/* Tab Filter Capsule */}
           <div style={{
             display: 'flex',
-            background: 'rgba(255, 255, 255, 0.05)',
-            padding: 4,
-            borderRadius: 12,
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: 'rgba(255, 255, 255, 0.04)',
+            padding: 5,
+            borderRadius: 14,
+            border: '1px solid rgba(255, 255, 255, 0.09)',
           }}>
             <button
               onClick={() => setActiveTab('now_showing')}
               style={{
-                padding: '8px 20px',
-                borderRadius: 8,
-                fontSize: '0.88rem',
-                fontWeight: 600,
-                background: activeTab === 'now_showing' ? 'var(--primary)' : 'transparent',
+                padding: '9px 22px',
+                borderRadius: 10,
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                background: activeTab === 'now_showing' ? 'var(--primary-gradient)' : 'transparent',
                 color: activeTab === 'now_showing' ? '#fff' : '#94a3b8',
                 transition: 'var(--transition)',
+                boxShadow: activeTab === 'now_showing' ? '0 4px 16px var(--primary-glow)' : 'none',
               }}
             >
               Now Showing
@@ -240,13 +312,14 @@ export const Home = () => {
             <button
               onClick={() => setActiveTab('coming_soon')}
               style={{
-                padding: '8px 20px',
-                borderRadius: 8,
-                fontSize: '0.88rem',
-                fontWeight: 600,
-                background: activeTab === 'coming_soon' ? 'var(--primary)' : 'transparent',
+                padding: '9px 22px',
+                borderRadius: 10,
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                background: activeTab === 'coming_soon' ? 'var(--primary-gradient)' : 'transparent',
                 color: activeTab === 'coming_soon' ? '#fff' : '#94a3b8',
                 transition: 'var(--transition)',
+                boxShadow: activeTab === 'coming_soon' ? '0 4px 16px var(--primary-glow)' : 'none',
               }}
             >
               Coming Soon
@@ -255,8 +328,13 @@ export const Home = () => {
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '80px 0', color: '#8b5cf6' }}>
-            Loading blockbuster listings...
+          <div style={{ textAlign: 'center', padding: '100px 0', color: '#f43f5e', fontSize: '1.1rem' }}>
+            <Sparkles size={28} className="animate-pulse" style={{ display: 'inline-block', marginBottom: 12 }} />
+            <div>Loading cinema schedule & titles...</div>
+          </div>
+        ) : filteredMovies.length === 0 ? (
+          <div className="glass-panel" style={{ textAlign: 'center', padding: '60px 24px', color: '#94a3b8' }}>
+            <p style={{ fontSize: '1.1rem' }}>No movies currently found in this category.</p>
           </div>
         ) : (
           <div className="grid-movies">

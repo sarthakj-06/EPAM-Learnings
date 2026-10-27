@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Ticket, Calendar, Clock, MapPin, Eye, Film, AlertTriangle } from 'lucide-react';
+import { Ticket, Calendar, Clock, MapPin, Eye, Film, AlertTriangle, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { TicketModal } from '../components/TicketModal';
 
@@ -44,55 +44,62 @@ export const MyBookings = () => {
   };
 
   return (
-    <div style={{ maxWidth: 1100, margin: '40px auto 80px', padding: '0 24px', minHeight: '80vh' }}>
+    <div style={{ maxWidth: 1140, margin: '40px auto 90px', padding: '0 24px', minHeight: '80vh' }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 32,
+        alignItems: 'flex-end',
+        marginBottom: 36,
         flexWrap: 'wrap',
-        gap: 16,
+        gap: 18,
       }}>
         <div>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#fff' }}>
+          <div style={{ color: '#f43f5e', fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            Customer Pass Wallet
+          </div>
+          <h1 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#fff', marginTop: 4, letterSpacing: '-0.025em' }}>
             My Cinema Tickets
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.95rem' }}>
-            View your active movie passes, digital QR codes, and reservation history
+          <p style={{ color: '#94a3b8', fontSize: '0.98rem', marginTop: 4 }}>
+            Access verified boarding QR passes, view past movie bookings, and manage cancellations.
           </p>
         </div>
 
         {/* Tab Filters */}
         <div style={{
           display: 'flex',
-          background: 'rgba(255, 255, 255, 0.05)',
-          padding: 4,
-          borderRadius: 12,
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(255, 255, 255, 0.04)',
+          padding: 5,
+          borderRadius: 14,
+          border: '1px solid rgba(255, 255, 255, 0.09)',
         }}>
           <button
             onClick={() => setActiveTab('all')}
             style={{
-              padding: '8px 16px',
-              borderRadius: 8,
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              background: activeTab === 'all' ? 'var(--primary)' : 'transparent',
+              padding: '8px 18px',
+              borderRadius: 10,
+              fontSize: '0.86rem',
+              fontWeight: 700,
+              background: activeTab === 'all' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'all' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'all' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
-            All ({bookings.length})
+            All Passes ({bookings.length})
           </button>
           <button
             onClick={() => setActiveTab('confirmed')}
             style={{
-              padding: '8px 16px',
-              borderRadius: 8,
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              background: activeTab === 'confirmed' ? 'var(--primary)' : 'transparent',
+              padding: '8px 18px',
+              borderRadius: 10,
+              fontSize: '0.86rem',
+              fontWeight: 700,
+              background: activeTab === 'confirmed' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'confirmed' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'confirmed' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
             Confirmed
@@ -100,12 +107,14 @@ export const MyBookings = () => {
           <button
             onClick={() => setActiveTab('cancelled')}
             style={{
-              padding: '8px 16px',
-              borderRadius: 8,
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              background: activeTab === 'cancelled' ? 'var(--primary)' : 'transparent',
+              padding: '8px 18px',
+              borderRadius: 10,
+              fontSize: '0.86rem',
+              fontWeight: 700,
+              background: activeTab === 'cancelled' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'cancelled' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'cancelled' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
             Cancelled
@@ -114,21 +123,22 @@ export const MyBookings = () => {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '80px 0', color: '#8b5cf6' }}>
-          Retrieving your tickets...
+        <div style={{ textAlign: 'center', padding: '100px 0', color: '#f43f5e', fontSize: '1.1rem' }}>
+          <Sparkles size={28} style={{ display: 'inline-block', marginBottom: 12 }} />
+          <div>Retrieving your cinema passes...</div>
         </div>
       ) : filteredBookings.length === 0 ? (
-        <div className="glass-panel" style={{ textAlign: 'center', padding: '60px 24px' }}>
-          <div style={{ fontSize: '3rem', marginBottom: 12 }}>🎟️</div>
-          <h3 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: 8 }}>
-            No tickets found in this tab
+        <div className="glass-panel-elevated" style={{ textAlign: 'center', padding: '70px 24px' }}>
+          <div style={{ fontSize: '3rem', marginBottom: 14 }}>🎟️</div>
+          <h3 style={{ fontSize: '1.45rem', color: '#fff', marginBottom: 8, fontWeight: 800 }}>
+            No tickets found in this section
           </h3>
-          <p style={{ color: '#94a3b8', marginBottom: 24 }}>
-            Explore our curated movies list and book your next cinema experience.
+          <p style={{ color: '#94a3b8', marginBottom: 26, maxWidth: 450, margin: '0 auto 26px' }}>
+            Ready for a movie night? Explore currently showing blockbuster listings and reserve premier seats.
           </p>
-          <Link to="/movies" className="btn-primary">
+          <Link to="/movies" className="btn-primary" style={{ padding: '12px 26px' }}>
             <Film size={18} />
-            <span>Browse Movies</span>
+            <span>Browse Cinema Movies</span>
           </Link>
         </div>
       ) : (
@@ -136,49 +146,50 @@ export const MyBookings = () => {
           {filteredBookings.map((b) => (
             <div
               key={b._id}
-              className="glass-panel"
+              className="glass-panel-elevated"
               style={{
-                padding: '24px',
+                padding: '24px 28px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: 20,
-                borderLeft: `4px solid ${b.bookingStatus === 'confirmed' ? '#10b981' : '#f43f5e'}`,
+                borderLeft: `5px solid ${b.bookingStatus === 'confirmed' ? '#10b981' : '#f43f5e'}`,
+                transition: 'var(--transition)',
               }}
             >
               {/* Left Movie Info */}
-              <div style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
                 <img
                   src={b.movie?.poster || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=200&q=80'}
                   alt={b.movie?.title}
-                  style={{ width: 70, height: 100, borderRadius: 10, objectFit: 'cover' }}
+                  style={{ width: 72, height: 104, borderRadius: 10, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-                    <span className={`badge ${b.bookingStatus === 'confirmed' ? 'badge-emerald' : 'badge-gold'}`}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                    <span className={`badge ${b.bookingStatus === 'confirmed' ? 'badge-emerald' : 'badge-ruby'}`}>
                       {b.bookingStatus?.toUpperCase()}
                     </span>
-                    <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                      Ref: {b.bookingNumber}
+                    <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700, letterSpacing: '0.04em' }}>
+                      REF: {b.bookingNumber}
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.015em' }}>
                     {b.movie?.title || 'Cinema Screening'}
                   </h3>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, color: '#94a3b8', fontSize: '0.85rem', marginTop: 6, flexWrap: 'wrap' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <MapPin size={13} color="#8b5cf6" /> {b.theatre?.name}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, color: '#94a3b8', fontSize: '0.86rem', marginTop: 6, flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <MapPin size={14} color="#f43f5e" /> {b.theatre?.name}
                     </span>
-                    <span>•</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Calendar size={13} color="#38bdf8" /> {b.show?.showDate || 'Scheduled'}
+                    <span style={{ color: '#475569' }}>•</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <Calendar size={14} color="#0ea5e9" /> {b.show?.showDate || 'Scheduled'}
                     </span>
-                    <span>•</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Clock size={13} color="#fbbf24" /> {b.show?.showTime || 'Time'}
+                    <span style={{ color: '#475569' }}>•</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <Clock size={14} color="#f59e0b" /> {b.show?.showTime || 'Time'}
                     </span>
                   </div>
                 </div>
@@ -186,13 +197,13 @@ export const MyBookings = () => {
 
               {/* Middle Seat & Price Info */}
               <div style={{ textAlign: 'right', minWidth: 140 }}>
-                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '0.74rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.06em' }}>
                   Seats ({b.seats?.length})
                 </div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#38bdf8', marginTop: 2 }}>
+                <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#6ee7b7', marginTop: 2 }}>
                   {b.seats?.join(', ')}
                 </div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#34d399', marginTop: 4 }}>
+                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', marginTop: 4 }}>
                   ${b.totalAmount}
                 </div>
               </div>
@@ -202,9 +213,9 @@ export const MyBookings = () => {
                 <button
                   onClick={() => setSelectedBookingForModal(b)}
                   className="btn-primary"
-                  style={{ padding: '10px 18px', fontSize: '0.88rem' }}
+                  style={{ padding: '11px 22px', fontSize: '0.9rem', fontWeight: 700 }}
                 >
-                  <Eye size={15} />
+                  <Eye size={16} />
                   <span>View Pass / QR</span>
                 </button>
               </div>

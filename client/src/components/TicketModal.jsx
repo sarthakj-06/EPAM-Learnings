@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Printer, Calendar, Clock, MapPin, Film, AlertTriangle, CheckCircle } from 'lucide-react';
+import { X, Printer, Calendar, Clock, MapPin, Film, AlertTriangle, CheckCircle, Ticket } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const TicketModal = ({ booking, onClose, onCancelled }) => {
@@ -15,7 +15,7 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
   };
 
   const handleCancelBooking = async () => {
-    if (!window.confirm('Are you sure you want to cancel this booking? A 15% cancellation fee will apply.')) {
+    if (!window.confirm('Are you sure you want to cancel this booking? An 85% refund will be credited instantly (15% standard processing fee applies).')) {
       return;
     }
 
@@ -50,9 +50,9 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'rgba(0, 0, 0, 0.85)',
-      backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)',
+      background: 'rgba(5, 7, 12, 0.88)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       zIndex: 1000,
       display: 'flex',
       alignItems: 'center',
@@ -60,29 +60,32 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
       padding: 20,
     }}>
       <div style={{
-        maxWidth: 500,
+        maxWidth: 520,
         width: '100%',
         position: 'relative',
-        animation: 'fadeIn 0.3s ease-out',
+        animation: 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
       }}>
         {/* Close Button */}
         <button
           onClick={onClose}
           style={{
             position: 'absolute',
-            top: -45,
+            top: -48,
             right: 0,
-            background: 'rgba(255, 255, 255, 0.1)',
-            border: 'none',
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             color: '#fff',
-            width: 36,
-            height: 36,
+            width: 38,
+            height: 38,
             borderRadius: '50%',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            transition: 'var(--transition)',
           }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(244, 63, 94, 0.4)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
         >
           <X size={20} />
         </button>
@@ -91,21 +94,21 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
         <div className="digital-ticket">
           {/* Header */}
           <div style={{
-            background: 'linear-gradient(135deg, #1e1b4b 0%, #31104b 100%)',
-            padding: '24px 28px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            background: 'linear-gradient(135deg, #240c17 0%, #170912 100%)',
+            padding: '26px 30px',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
             position: 'relative',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <span className="badge badge-purple" style={{ marginBottom: 8 }}>
+                <span className="badge badge-ruby" style={{ marginBottom: 8 }}>
                   IMOVIES CINEMA PASS
                 </span>
-                <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', marginTop: 4 }}>
+                <h2 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#fff', marginTop: 4, letterSpacing: '-0.02em' }}>
                   {booking.movie?.title || 'Movie Experience'}
                 </h2>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#c084fc', fontSize: '0.85rem', marginTop: 4 }}>
-                  <MapPin size={14} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#fda4af', fontSize: '0.86rem', marginTop: 4 }}>
+                  <MapPin size={14} color="#f43f5e" />
                   <span>{booking.theatre?.name || 'Grand Plex Theatre'}</span>
                 </div>
               </div>
@@ -116,7 +119,7 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
           </div>
 
           {/* Ticket Body */}
-          <div style={{ padding: '24px 28px' }}>
+          <div style={{ padding: '26px 30px' }}>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
@@ -124,20 +127,20 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
               marginBottom: 20,
             }}>
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Date</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginTop: 2 }}>
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Date</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', marginTop: 3 }}>
                   {booking.show?.showDate || 'Today'}
                 </div>
               </div>
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginTop: 2 }}>
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Time</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', marginTop: 3 }}>
                   {booking.show?.showTime || '07:30 PM'}
                 </div>
               </div>
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Screen</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginTop: 2 }}>
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Auditorium</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', marginTop: 3 }}>
                   {booking.show?.screenName?.split('-')[0] || 'Screen 1'}
                 </div>
               </div>
@@ -146,121 +149,126 @@ export const TicketModal = ({ booking, onClose, onCancelled }) => {
             {/* Reserved Seats List */}
             <div style={{
               background: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: 12,
-              padding: '14px 18px',
+              borderRadius: 'var(--radius-md)',
+              padding: '16px 20px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              marginBottom: 20,
             }}>
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Seats Allocated</span>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#38bdf8', marginTop: 2 }}>
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Assigned Seats</span>
+                <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#6ee7b7', marginTop: 2 }}>
                   {booking.seats?.join(', ')}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Total Paid</span>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#34d399', marginTop: 2 }}>
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Total Paid</span>
+                <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', marginTop: 2 }}>
                   ${booking.totalAmount}
                 </div>
               </div>
             </div>
 
-            {/* Perforated Divider */}
             <div className="ticket-divider" />
 
-            {/* QR Code and Barcode Section */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 20,
-            }}>
+            {/* QR Code and Reference */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 22 }}>
               <div>
-                <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase' }}>Booking Reference</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginTop: 2 }}>
+                <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>Booking Number</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff', marginTop: 2 }}>
                   {booking.bookingNumber}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: 4 }}>
-                  Scan at theatre entrance gate
+                <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: 4 }}>
+                  Scan to enter cinema auditorium
                 </div>
-
-                {booking.bookingStatus === 'cancelled' && (
-                  <div style={{
-                    marginTop: 10,
-                    fontSize: '0.75rem',
-                    color: '#f87171',
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    padding: '4px 8px',
-                    borderRadius: 6,
-                  }}>
-                    Refund of ${booking.refundAmount} processed
-                  </div>
-                )}
               </div>
 
               {booking.qrCode && (
                 <div style={{
                   padding: 8,
-                  background: '#0f172a',
-                  border: '1px solid rgba(139, 92, 246, 0.4)',
+                  background: '#0d111a',
+                  border: '1px solid rgba(244, 63, 94, 0.4)',
                   borderRadius: 12,
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
                 }}>
-                  <img
-                    src={booking.qrCode}
-                    alt="Digital Pass QR"
-                    style={{ width: 90, height: 90, display: 'block', borderRadius: 6 }}
-                  />
+                  <img src={booking.qrCode} alt="QR Pass" style={{ width: 80, height: 80, display: 'block', borderRadius: 6 }} />
                 </div>
               )}
             </div>
 
+            {/* Errors / Statuses */}
             {cancelError && (
-              <div style={{ marginTop: 16, color: '#f87171', fontSize: '0.85rem' }}>
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.18)',
+                border: '1px solid rgba(239, 68, 68, 0.35)',
+                color: '#fca5a5',
+                padding: '10px 14px',
+                borderRadius: 10,
+                fontSize: '0.84rem',
+                marginBottom: 16,
+              }}>
                 {cancelError}
               </div>
             )}
-          </div>
 
-          {/* Action Footer */}
-          <div style={{
-            background: 'rgba(7, 9, 14, 0.6)',
-            padding: '16px 28px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-            <button
-              onClick={handlePrint}
-              className="btn-secondary"
-              style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-            >
-              <Printer size={15} />
-              <span>Print Pass</span>
-            </button>
-
-            {booking.bookingStatus === 'confirmed' && (
-              <button
-                disabled={cancelling}
-                onClick={handleCancelBooking}
-                style={{
-                  background: 'rgba(239, 68, 68, 0.1)',
-                  border: '1px solid rgba(239, 68, 68, 0.3)',
-                  color: '#f87171',
-                  padding: '8px 16px',
-                  borderRadius: 10,
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {cancelling ? 'Cancelling...' : 'Cancel Booking'}
-              </button>
+            {cancelSuccess && (
+              <div style={{
+                background: 'rgba(16, 185, 129, 0.18)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                color: '#6ee7b7',
+                padding: '10px 14px',
+                borderRadius: 10,
+                fontSize: '0.84rem',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                fontWeight: 700,
+              }}>
+                <CheckCircle size={16} /> Booking successfully cancelled. 85% refund credited.
+              </div>
             )}
+
+            {/* Modal Actions */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <button
+                onClick={handlePrint}
+                className="btn-secondary"
+                style={{ flex: 1, justifyContent: 'center', padding: '12px', fontSize: '0.9rem' }}
+              >
+                <Printer size={16} />
+                <span>Print Ticket</span>
+              </button>
+
+              {booking.bookingStatus === 'confirmed' && (
+                <button
+                  onClick={handleCancelBooking}
+                  disabled={cancelling}
+                  style={{
+                    flex: 1,
+                    background: 'rgba(239, 68, 68, 0.12)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    color: '#f87171',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '12px',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    transition: 'var(--transition)',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.22)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'}
+                >
+                  <AlertTriangle size={16} />
+                  <span>{cancelling ? 'Refunding...' : 'Cancel & Refund'}</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

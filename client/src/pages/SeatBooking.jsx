@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Film, MapPin, Calendar, Clock, ShieldCheck, ChevronRight, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Film, MapPin, Calendar, Clock, ShieldCheck, ChevronRight, AlertCircle, ArrowLeft, Sparkles, Timer } from 'lucide-react';
 import { SeatGrid } from '../components/SeatGrid';
 import { useSocket } from '../context/SocketContext';
 import { useAuth } from '../context/AuthContext';
@@ -144,17 +144,18 @@ export const SeatBooking = () => {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 0', color: '#8b5cf6', fontSize: '1.2rem' }}>
-        Loading cinema theatre layout...
+      <div style={{ textAlign: 'center', padding: '120px 0', color: '#f43f5e', fontSize: '1.2rem' }}>
+        <Sparkles size={32} style={{ display: 'inline-block', marginBottom: 12 }} />
+        <div>Connecting to live cinema theatre layout...</div>
       </div>
     );
   }
 
   if (!show) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 24px' }}>
-        <h2>Showtime Not Found</h2>
-        <Link to="/movies" className="btn-primary" style={{ marginTop: 20 }}>
+      <div style={{ textAlign: 'center', padding: '120px 24px' }}>
+        <h2 style={{ fontSize: '1.8rem', color: '#fff', marginBottom: 12 }}>Showtime Not Found</h2>
+        <Link to="/movies" className="btn-primary" style={{ padding: '12px 24px' }}>
           Back to Movies
         </Link>
       </div>
@@ -196,55 +197,65 @@ export const SeatBooking = () => {
   };
 
   return (
-    <div style={{ maxWidth: 1300, margin: '0 auto', padding: '30px 24px 80px' }}>
+    <div style={{ maxWidth: 1320, margin: '0 auto', padding: '30px 24px 80px' }}>
       {/* Back Button */}
       <div style={{ marginBottom: 20 }}>
         <button
           onClick={() => navigate(-1)}
           style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#94a3b8',
-            display: 'flex',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            padding: '8px 16px',
+            borderRadius: 999,
+            color: '#cbd5e1',
+            display: 'inline-flex',
             alignItems: 'center',
-            gap: 6,
-            fontSize: '0.9rem',
+            gap: 8,
+            fontSize: '0.88rem',
             cursor: 'pointer',
+            transition: 'var(--transition)',
           }}
+          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(244, 63, 94, 0.4)'}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
         >
           <ArrowLeft size={16} />
-          <span>Back to Movie</span>
+          <span>Back to Movie Info</span>
         </button>
       </div>
 
       {/* Header Info Banner */}
-      <div className="glass-panel" style={{
-        padding: '20px 28px',
-        marginBottom: 30,
+      <div className="glass-panel-elevated" style={{
+        padding: '24px 30px',
+        marginBottom: 32,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
-        gap: 16,
+        gap: 18,
       }}>
         <div>
-          <span className="badge badge-purple" style={{ marginBottom: 6 }}>
-            {show.format} • {show.language}
-          </span>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', marginTop: 4 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
+            <span className="badge badge-ruby">
+              {show.format}
+            </span>
+            <span className="badge badge-cyan">
+              {show.language}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
             {show.movie?.title}
           </h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, color: '#94a3b8', fontSize: '0.88rem', marginTop: 6, flexWrap: 'wrap' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <MapPin size={14} color="#8b5cf6" /> {show.theatre?.name} ({show.screenName})
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, color: '#94a3b8', fontSize: '0.9rem', marginTop: 6, flexWrap: 'wrap' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <MapPin size={15} color="#f43f5e" /> {show.theatre?.name} ({show.screenName})
             </span>
-            <span>•</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Calendar size={14} color="#38bdf8" /> {show.showDate}
+            <span style={{ color: '#475569' }}>•</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Calendar size={15} color="#0ea5e9" /> {show.showDate}
             </span>
-            <span>•</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Clock size={14} color="#fbbf24" /> {show.showTime}
+            <span style={{ color: '#475569' }}>•</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Clock size={15} color="#f59e0b" /> {show.showTime}
             </span>
           </div>
         </div>
@@ -252,16 +263,17 @@ export const SeatBooking = () => {
         {/* Hold Countdown */}
         {selectedSeats.length > 0 && (
           <div style={{
-            background: 'rgba(245, 158, 11, 0.1)',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            borderRadius: 12,
-            padding: '10px 18px',
+            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(244, 63, 94, 0.1) 100%)',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
+            borderRadius: 'var(--radius-md)',
+            padding: '12px 22px',
             textAlign: 'center',
+            boxShadow: '0 4px 18px rgba(245, 158, 11, 0.2)',
           }}>
-            <div style={{ fontSize: '0.75rem', color: '#fbbf24', textTransform: 'uppercase', fontWeight: 700 }}>
-              Seats Locked For
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.74rem', color: '#fbbf24', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.06em' }}>
+              <Timer size={13} /> Seats Locked For
             </div>
-            <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#fff', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#fff', letterSpacing: '0.04em', marginTop: 2 }}>
               {formatTimer(timerSeconds)}
             </div>
           </div>
@@ -270,18 +282,19 @@ export const SeatBooking = () => {
 
       {lockError && (
         <div style={{
-          background: 'rgba(239, 68, 68, 0.15)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          color: '#f87171',
-          padding: '12px 18px',
-          borderRadius: 12,
+          background: 'rgba(239, 68, 68, 0.18)',
+          border: '1px solid rgba(239, 68, 68, 0.35)',
+          color: '#fca5a5',
+          padding: '14px 20px',
+          borderRadius: 'var(--radius-md)',
           marginBottom: 24,
           display: 'flex',
           alignItems: 'center',
-          gap: 10,
-          fontSize: '0.9rem',
+          gap: 12,
+          fontSize: '0.92rem',
+          fontWeight: 600,
         }}>
-          <AlertCircle size={18} />
+          <AlertCircle size={20} color="#f87171" />
           <span>{lockError}</span>
         </div>
       )}
@@ -289,7 +302,7 @@ export const SeatBooking = () => {
       {/* Main Seating Layout & Checkout Panel */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 340px',
+        gridTemplateColumns: '1fr 360px',
         gap: 32,
         alignItems: 'flex-start',
       }} className="seat-booking-grid">
@@ -304,42 +317,60 @@ export const SeatBooking = () => {
         </div>
 
         {/* Right Column: Order Summary Floating Card */}
-        <div className="glass-panel" style={{ padding: '24px 26px', position: 'sticky', top: 90 }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: 18, color: '#fff' }}>
-            Reservation Summary
-          </h3>
+        <div className="glass-panel-elevated" style={{ padding: '28px', position: 'sticky', top: 90 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
+            <Film size={18} color="#f43f5e" />
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 900, color: '#fff' }}>
+              Booking Summary
+            </h3>
+          </div>
 
           {selectedSeats.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#94a3b8' }}>
-              <div style={{ fontSize: '2rem', marginBottom: 10 }}>🎟️</div>
-              <p style={{ fontSize: '0.9rem' }}>Please select your seats on the cinema layout</p>
+            <div style={{ textAlign: 'center', padding: '48px 0', color: '#94a3b8' }}>
+              <div style={{
+                width: 60,
+                height: 60,
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px dashed rgba(255, 255, 255, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 14px',
+                fontSize: '1.5rem',
+              }}>
+                🎟️
+              </div>
+              <div style={{ fontWeight: 700, color: '#cbd5e1', fontSize: '0.95rem' }}>No Seats Selected Yet</div>
+              <p style={{ fontSize: '0.84rem', marginTop: 4 }}>Click on available auditorium seats to lock them</p>
             </div>
           ) : (
             <div>
               {/* Selected Seats Pills */}
-              <div style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 8, fontWeight: 700 }}>
-                  Selected Seats ({selectedSeats.length})
+              <div style={{ marginBottom: 22 }}>
+                <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 10, fontWeight: 800, letterSpacing: '0.06em' }}>
+                  Reserved Seats ({selectedSeats.length})
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {selectedSeats.map((s) => (
                     <div
                       key={s.seatNumber}
                       style={{
-                        background: 'rgba(16, 185, 129, 0.15)',
-                        border: '1px solid rgba(16, 185, 129, 0.3)',
-                        padding: '4px 10px',
-                        borderRadius: 8,
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: '#34d399',
+                        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%)',
+                        border: '1px solid rgba(16, 185, 129, 0.4)',
+                        padding: '6px 12px',
+                        borderRadius: 10,
+                        fontSize: '0.84rem',
+                        fontWeight: 800,
+                        color: '#6ee7b7',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 4,
+                        gap: 6,
+                        boxShadow: '0 2px 8px rgba(16, 185, 129, 0.2)',
                       }}
                     >
                       <span>{s.seatNumber}</span>
-                      <span style={{ fontSize: '0.72rem', opacity: 0.8 }}>(${s.price})</span>
+                      <span style={{ fontSize: '0.74rem', opacity: 0.85 }}>(${s.price})</span>
                     </div>
                   ))}
                 </div>
@@ -349,31 +380,38 @@ export const SeatBooking = () => {
               <div style={{
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                padding: '16px 0',
-                marginBottom: 20,
+                padding: '18px 0',
+                marginBottom: 22,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
-                fontSize: '0.9rem',
+                gap: 12,
+                fontSize: '0.92rem',
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#cbd5e1' }}>
                   <span>Tickets Subtotal</span>
-                  <span>${subtotal}</span>
+                  <span style={{ fontWeight: 700, color: '#fff' }}>${subtotal}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#cbd5e1' }}>
-                  <span>Convenience & Booking Fee</span>
-                  <span>${convenienceFee}</span>
+                  <span>Auditorium Facility Fee</span>
+                  <span style={{ fontWeight: 700, color: '#fff' }}>${convenienceFee}</span>
                 </div>
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   color: '#fff',
-                  fontWeight: 800,
-                  fontSize: '1.1rem',
-                  paddingTop: 8,
+                  fontWeight: 900,
+                  fontSize: '1.25rem',
+                  paddingTop: 10,
+                  borderTop: '1px dashed rgba(255, 255, 255, 0.1)',
                 }}>
-                  <span>Total Amount</span>
-                  <span style={{ color: '#38bdf8' }}>${totalAmount}</span>
+                  <span>Total Due</span>
+                  <span style={{
+                    background: 'linear-gradient(135deg, #f43f5e 0%, #f59e0b 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}>
+                    ${totalAmount}
+                  </span>
                 </div>
               </div>
 
@@ -381,14 +419,14 @@ export const SeatBooking = () => {
               <button
                 onClick={handleProceedToCheckout}
                 className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center', padding: '12px 20px', fontSize: '0.95rem' }}
+                style={{ width: '100%', justifyContent: 'center', padding: '14px 20px', fontSize: '1rem', fontWeight: 800 }}
               >
                 <span>Proceed to Checkout</span>
                 <ChevronRight size={18} />
               </button>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: '#64748b', fontSize: '0.75rem', marginTop: 14 }}>
-                <ShieldCheck size={14} color="#10b981" />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, color: '#64748b', fontSize: '0.78rem', marginTop: 16 }}>
+                <ShieldCheck size={15} color="#10b981" />
                 <span>Protected by 256-Bit SSL Encryption</span>
               </div>
             </div>
@@ -397,7 +435,7 @@ export const SeatBooking = () => {
       </div>
 
       <style>{`
-        @media (max-width: 950px) {
+        @media (max-width: 980px) {
           .seat-booking-grid {
             grid-template-columns: 1fr !important;
           }

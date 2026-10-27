@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { CreditCard, Smartphone, Building, ShieldCheck, Tag, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { CreditCard, Smartphone, Building, ShieldCheck, Tag, Lock, CheckCircle2, AlertCircle, Film, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
@@ -54,6 +54,19 @@ export const Checkout = () => {
     }
   };
 
+  const applyQuickPromo = (code) => {
+    setPromoCode(code);
+    setPromoError('');
+    if (code === 'IMOVIES50') {
+      setDiscount(50);
+      setPromoApplied('IMOVIES50 ($50 Off)');
+    } else if (code === 'VIPPASS') {
+      const disc = Math.round(subtotal * 0.2);
+      setDiscount(disc);
+      setPromoApplied(`VIPPASS (20% Off: -$${disc})`);
+    }
+  };
+
   const finalTotal = Math.max(0, subtotal + convenienceFee - discount);
 
   const handleCompletePayment = async (e) => {
@@ -103,10 +116,10 @@ export const Checkout = () => {
       // Launch Confetti Celebration!
       try {
         confetti({
-          particleCount: 120,
-          spread: 70,
+          particleCount: 130,
+          spread: 80,
           origin: { y: 0.6 },
-          colors: ['#8b5cf6', '#38bdf8', '#fbbf24', '#34d399'],
+          colors: ['#f43f5e', '#ea580c', '#fbbf24', '#10b981', '#38bdf8'],
         });
       } catch (err) {
         // non-blocking
@@ -123,29 +136,33 @@ export const Checkout = () => {
   };
 
   return (
-    <div style={{ maxWidth: 1100, margin: '40px auto 80px', padding: '0 24px' }}>
-      <div style={{ marginBottom: 30 }}>
-        <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#fff' }}>
-          Secure Checkout
+    <div style={{ maxWidth: 1120, margin: '40px auto 90px', padding: '0 24px' }}>
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ color: '#f43f5e', fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          Final Step
+        </div>
+        <h1 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#fff', marginTop: 4, letterSpacing: '-0.025em' }}>
+          Express Cinema Checkout
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.95rem' }}>
-          Complete your reservation with encrypted cinema payment gateway
+        <p style={{ color: '#94a3b8', fontSize: '0.98rem', marginTop: 4 }}>
+          Complete your reservation with PCI-compliant encrypted cinema payment gateway.
         </p>
       </div>
 
       {error && (
         <div style={{
-          background: 'rgba(239, 68, 68, 0.15)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          color: '#f87171',
+          background: 'rgba(239, 68, 68, 0.18)',
+          border: '1px solid rgba(239, 68, 68, 0.35)',
+          color: '#fca5a5',
           padding: '14px 20px',
-          borderRadius: 12,
+          borderRadius: 'var(--radius-md)',
           marginBottom: 24,
           display: 'flex',
           alignItems: 'center',
-          gap: 10,
+          gap: 12,
+          fontWeight: 600,
         }}>
-          <AlertCircle size={18} />
+          <AlertCircle size={20} color="#f87171" />
           <span>{error}</span>
         </div>
       )}
@@ -157,9 +174,9 @@ export const Checkout = () => {
         alignItems: 'flex-start',
       }} className="checkout-grid">
         {/* Left: Payment Form & Options */}
-        <div className="glass-panel" style={{ padding: '30px' }}>
-          <h2 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20, color: '#fff' }}>
-            Choose Payment Method
+        <div className="glass-panel-elevated" style={{ padding: '32px' }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: 20, color: '#fff' }}>
+            Select Payment Method
           </h2>
 
           {/* Payment Method Selector Tabs */}
@@ -167,16 +184,16 @@ export const Checkout = () => {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 12,
-            marginBottom: 26,
+            marginBottom: 28,
           }}>
             <button
               type="button"
               onClick={() => setPaymentMethod('card')}
               style={{
-                padding: '14px 10px',
-                borderRadius: 12,
-                background: paymentMethod === 'card' ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                border: `1px solid ${paymentMethod === 'card' ? 'var(--primary)' : 'rgba(255, 255, 255, 0.08)'}`,
+                padding: '16px 10px',
+                borderRadius: 'var(--radius-md)',
+                background: paymentMethod === 'card' ? 'rgba(244, 63, 94, 0.16)' : 'rgba(255, 255, 255, 0.04)',
+                border: `1px solid ${paymentMethod === 'card' ? 'rgba(244, 63, 94, 0.5)' : 'rgba(255, 255, 255, 0.08)'}`,
                 color: paymentMethod === 'card' ? '#fff' : '#94a3b8',
                 cursor: 'pointer',
                 display: 'flex',
@@ -184,20 +201,21 @@ export const Checkout = () => {
                 alignItems: 'center',
                 gap: 8,
                 transition: 'var(--transition)',
+                boxShadow: paymentMethod === 'card' ? '0 4px 16px var(--primary-glow)' : 'none',
               }}
             >
-              <CreditCard size={20} color={paymentMethod === 'card' ? '#c084fc' : '#94a3b8'} />
-              <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>Cards</span>
+              <CreditCard size={22} color={paymentMethod === 'card' ? '#f43f5e' : '#94a3b8'} />
+              <span style={{ fontSize: '0.84rem', fontWeight: 700 }}>Credit Card</span>
             </button>
 
             <button
               type="button"
               onClick={() => setPaymentMethod('upi')}
               style={{
-                padding: '14px 10px',
-                borderRadius: 12,
-                background: paymentMethod === 'upi' ? 'rgba(6, 182, 212, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                border: `1px solid ${paymentMethod === 'upi' ? '#06b6d4' : 'rgba(255, 255, 255, 0.08)'}`,
+                padding: '16px 10px',
+                borderRadius: 'var(--radius-md)',
+                background: paymentMethod === 'upi' ? 'rgba(14, 165, 233, 0.16)' : 'rgba(255, 255, 255, 0.04)',
+                border: `1px solid ${paymentMethod === 'upi' ? '#0ea5e9' : 'rgba(255, 255, 255, 0.08)'}`,
                 color: paymentMethod === 'upi' ? '#fff' : '#94a3b8',
                 cursor: 'pointer',
                 display: 'flex',
@@ -205,19 +223,20 @@ export const Checkout = () => {
                 alignItems: 'center',
                 gap: 8,
                 transition: 'var(--transition)',
+                boxShadow: paymentMethod === 'upi' ? '0 4px 16px var(--accent-cyan-glow)' : 'none',
               }}
             >
-              <Smartphone size={20} color={paymentMethod === 'upi' ? '#38bdf8' : '#94a3b8'} />
-              <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>UPI / Wallets</span>
+              <Smartphone size={22} color={paymentMethod === 'upi' ? '#38bdf8' : '#94a3b8'} />
+              <span style={{ fontSize: '0.84rem', fontWeight: 700 }}>Instant UPI</span>
             </button>
 
             <button
               type="button"
               onClick={() => setPaymentMethod('netbanking')}
               style={{
-                padding: '14px 10px',
-                borderRadius: 12,
-                background: paymentMethod === 'netbanking' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                padding: '16px 10px',
+                borderRadius: 'var(--radius-md)',
+                background: paymentMethod === 'netbanking' ? 'rgba(245, 158, 11, 0.16)' : 'rgba(255, 255, 255, 0.04)',
                 border: `1px solid ${paymentMethod === 'netbanking' ? '#f59e0b' : 'rgba(255, 255, 255, 0.08)'}`,
                 color: paymentMethod === 'netbanking' ? '#fff' : '#94a3b8',
                 cursor: 'pointer',
@@ -226,19 +245,20 @@ export const Checkout = () => {
                 alignItems: 'center',
                 gap: 8,
                 transition: 'var(--transition)',
+                boxShadow: paymentMethod === 'netbanking' ? '0 4px 16px var(--accent-gold-glow)' : 'none',
               }}
             >
-              <Building size={20} color={paymentMethod === 'netbanking' ? '#fbbf24' : '#94a3b8'} />
-              <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>Net Banking</span>
+              <Building size={22} color={paymentMethod === 'netbanking' ? '#fbbf24' : '#94a3b8'} />
+              <span style={{ fontSize: '0.84rem', fontWeight: 700 }}>Net Banking</span>
             </button>
           </div>
 
           <form onSubmit={handleCompletePayment}>
             {/* Card Inputs */}
             {paymentMethod === 'card' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                 <div>
-                  <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
+                  <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
                     Card Number
                   </label>
                   <input
@@ -246,44 +266,26 @@ export const Checkout = () => {
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
                     required
-                    style={{
-                      width: '100%',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: 10,
-                      padding: '12px 16px',
-                      color: '#fff',
-                      fontSize: '0.92rem',
-                      outline: 'none',
-                    }}
+                    className="input-field"
                   />
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-                    Cardholder Name
+                  <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
+                    Cardholder Full Name
                   </label>
                   <input
                     type="text"
                     value={cardName}
                     onChange={(e) => setCardName(e.target.value)}
                     required
-                    style={{
-                      width: '100%',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: 10,
-                      padding: '12px 16px',
-                      color: '#fff',
-                      fontSize: '0.92rem',
-                      outline: 'none',
-                    }}
+                    className="input-field"
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   <div>
-                    <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
+                    <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
                       Expiry Date
                     </label>
                     <input
@@ -292,21 +294,12 @@ export const Checkout = () => {
                       onChange={(e) => setCardExpiry(e.target.value)}
                       required
                       placeholder="MM/YY"
-                      style={{
-                        width: '100%',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        borderRadius: 10,
-                        padding: '12px 16px',
-                        color: '#fff',
-                        fontSize: '0.92rem',
-                        outline: 'none',
-                      }}
+                      className="input-field"
                     />
                   </div>
                   <div>
-                    <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-                      CVV
+                    <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
+                      Security CVV
                     </label>
                     <input
                       type="password"
@@ -314,16 +307,7 @@ export const Checkout = () => {
                       onChange={(e) => setCardCvv(e.target.value)}
                       required
                       maxLength={4}
-                      style={{
-                        width: '100%',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        borderRadius: 10,
-                        padding: '12px 16px',
-                        color: '#fff',
-                        fontSize: '0.92rem',
-                        outline: 'none',
-                      }}
+                      className="input-field"
                     />
                   </div>
                 </div>
@@ -333,8 +317,8 @@ export const Checkout = () => {
             {/* UPI Inputs */}
             {paymentMethod === 'upi' && (
               <div>
-                <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-                  Virtual Payment Address (UPI ID)
+                <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
+                  Virtual Payment Address (VPA / UPI ID)
                 </label>
                 <input
                   type="text"
@@ -342,20 +326,11 @@ export const Checkout = () => {
                   onChange={(e) => setUpiId(e.target.value)}
                   placeholder="username@bank"
                   required
-                  style={{
-                    width: '100%',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 10,
-                    padding: '12px 16px',
-                    color: '#fff',
-                    fontSize: '0.92rem',
-                    outline: 'none',
-                    marginBottom: 12,
-                  }}
+                  className="input-field"
+                  style={{ marginBottom: 12 }}
                 />
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                  Supported: Google Pay, PhonePe, Paytm, Amazon Pay
+                <div style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
+                  Supported Apps: Google Pay, PhonePe, Paytm, Amazon Pay, Apple Pay
                 </div>
               </div>
             )}
@@ -363,22 +338,14 @@ export const Checkout = () => {
             {/* Net Banking Inputs */}
             {paymentMethod === 'netbanking' && (
               <div>
-                <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-                  Select Institution
+                <label style={{ fontSize: '0.82rem', color: '#cbd5e1', display: 'block', marginBottom: 8, fontWeight: 700 }}>
+                  Select Financial Institution
                 </label>
                 <select
                   value={selectedBank}
                   onChange={(e) => setSelectedBank(e.target.value)}
-                  style={{
-                    width: '100%',
-                    background: '#121622',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 10,
-                    padding: '12px 16px',
-                    color: '#fff',
-                    fontSize: '0.92rem',
-                    outline: 'none',
-                  }}
+                  className="input-field"
+                  style={{ background: '#131926', cursor: 'pointer' }}
                 >
                   <option value="Chase Bank">Chase Bank</option>
                   <option value="Bank of America">Bank of America</option>
@@ -397,13 +364,14 @@ export const Checkout = () => {
               style={{
                 width: '100%',
                 justifyContent: 'center',
-                padding: '14px',
-                fontSize: '1rem',
-                marginTop: 26,
+                padding: '16px',
+                fontSize: '1.05rem',
+                fontWeight: 800,
+                marginTop: 28,
               }}
             >
               <Lock size={18} />
-              <span>{processing ? 'Authorizing Payment...' : `Pay $${finalTotal} & Confirm Tickets`}</span>
+              <span>{processing ? 'Processing Secure Reservation...' : `Pay $${finalTotal} & Confirm Tickets`}</span>
             </button>
           </form>
         </div>
@@ -411,28 +379,28 @@ export const Checkout = () => {
         {/* Right: Booking Summary & Promo */}
         <div>
           {/* Order Details Panel */}
-          <div className="glass-panel" style={{ padding: '24px 28px', marginBottom: 20 }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 16, color: '#fff' }}>
-              Cinema Ticket Pass
+          <div className="glass-panel-elevated" style={{ padding: '28px', marginBottom: 20 }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: 18, color: '#fff' }}>
+              Cinema Admission Pass
             </h3>
 
-            <div style={{ display: 'flex', gap: 14, marginBottom: 18 }}>
+            <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
               <img
                 src={show.movie?.poster}
                 alt={show.movie?.title}
-                style={{ width: 65, height: 95, borderRadius: 8, objectFit: 'cover' }}
+                style={{ width: 70, height: 100, borderRadius: 10, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.1)' }}
               />
               <div>
-                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff' }}>
+                <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#fff' }}>
                   {show.movie?.title}
                 </h4>
-                <div style={{ fontSize: '0.82rem', color: '#c084fc', marginTop: 2 }}>
+                <div style={{ fontSize: '0.82rem', color: '#fda4af', marginTop: 3, fontWeight: 700 }}>
                   {show.format} • {show.language}
                 </div>
-                <div style={{ fontSize: '0.82rem', color: '#94a3b8', marginTop: 4 }}>
+                <div style={{ fontSize: '0.85rem', color: '#cbd5e1', marginTop: 4 }}>
                   {show.theatre?.name}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                <div style={{ fontSize: '0.82rem', color: '#94a3b8', marginTop: 2 }}>
                   {show.showDate} at {show.showTime}
                 </div>
               </div>
@@ -440,35 +408,39 @@ export const Checkout = () => {
 
             <div style={{
               background: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: 10,
-              padding: '12px 16px',
+              borderRadius: 'var(--radius-md)',
+              padding: '14px 18px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 16,
+              marginBottom: 20,
+              border: '1px solid rgba(255, 255, 255, 0.06)',
             }}>
-              <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Reserved Seats:</span>
-              <span style={{ fontSize: '1rem', fontWeight: 800, color: '#38bdf8' }}>
+              <span style={{ fontSize: '0.88rem', color: '#94a3b8', fontWeight: 600 }}>Reserved Seats:</span>
+              <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#6ee7b7' }}>
                 {selectedSeats.map((s) => s.seatNumber).join(', ')}
               </span>
             </div>
 
             {/* Promo Code Box */}
-            <form onSubmit={handleApplyPromo} style={{ marginBottom: 16 }}>
+            <form onSubmit={handleApplyPromo} style={{ marginBottom: 18 }}>
+              <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 8, fontWeight: 800, letterSpacing: '0.05em' }}>
+                Have a Promo Voucher?
+              </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <input
                   type="text"
-                  placeholder="Promo Code (IMOVIES50)"
+                  placeholder="Enter code (e.g. IMOVIES50)"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
                   style={{
                     flex: 1,
                     background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 8,
-                    padding: '8px 12px',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: 10,
+                    padding: '10px 14px',
                     color: '#fff',
-                    fontSize: '0.85rem',
+                    fontSize: '0.88rem',
                     outline: 'none',
                     textTransform: 'uppercase',
                   }}
@@ -476,19 +448,56 @@ export const Checkout = () => {
                 <button
                   type="submit"
                   className="btn-secondary"
-                  style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                  style={{ padding: '10px 18px', fontSize: '0.88rem', fontWeight: 700 }}
                 >
                   Apply
                 </button>
               </div>
 
+              {/* Quick Click Promo Pills */}
+              <div style={{ display: 'flex', gap: 8, marginTop: 10, alignItems: 'center' }}>
+                <span style={{ fontSize: '0.74rem', color: '#64748b' }}>Quick test:</span>
+                <button
+                  type="button"
+                  onClick={() => applyQuickPromo('IMOVIES50')}
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#f59e0b',
+                    background: 'rgba(245, 158, 11, 0.1)',
+                    border: '1px solid rgba(245, 158, 11, 0.25)',
+                    padding: '2px 8px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                  }}
+                >
+                  IMOVIES50 ($50)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyQuickPromo('VIPPASS')}
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#f43f5e',
+                    background: 'rgba(244, 63, 94, 0.1)',
+                    border: '1px solid rgba(244, 63, 94, 0.25)',
+                    padding: '2px 8px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                  }}
+                >
+                  VIPPASS (20%)
+                </button>
+              </div>
+
               {promoApplied && (
-                <div style={{ marginTop: 8, color: '#34d399', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <CheckCircle2 size={13} /> {promoApplied}
+                <div style={{ marginTop: 10, color: '#34d399', fontSize: '0.84rem', display: 'flex', alignItems: 'center', gap: 5, fontWeight: 700 }}>
+                  <CheckCircle2 size={15} /> {promoApplied}
                 </div>
               )}
               {promoError && (
-                <div style={{ marginTop: 8, color: '#f87171', fontSize: '0.8rem' }}>
+                <div style={{ marginTop: 10, color: '#f87171', fontSize: '0.84rem' }}>
                   {promoError}
                 </div>
               )}
@@ -497,23 +506,23 @@ export const Checkout = () => {
             {/* Total breakdown */}
             <div style={{
               borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-              paddingTop: 14,
+              paddingTop: 16,
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
-              fontSize: '0.88rem',
+              gap: 10,
+              fontSize: '0.92rem',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
                 <span>Subtotal ({selectedSeats.length} seats)</span>
-                <span>${subtotal}</span>
+                <span style={{ color: '#fff', fontWeight: 600 }}>${subtotal}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
-                <span>Convenience Fee</span>
-                <span>${convenienceFee}</span>
+                <span>Auditorium Facility Fee</span>
+                <span style={{ color: '#fff', fontWeight: 600 }}>${convenienceFee}</span>
               </div>
               {discount > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#34d399', fontWeight: 600 }}>
-                  <span>Promotional Discount</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#34d399', fontWeight: 700 }}>
+                  <span>Voucher Discount</span>
                   <span>-${discount}</span>
                 </div>
               )}
@@ -521,14 +530,20 @@ export const Checkout = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 color: '#fff',
-                fontSize: '1.2rem',
+                fontSize: '1.3rem',
                 fontWeight: 900,
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: 10,
-                marginTop: 4,
+                borderTop: '1px dashed rgba(255, 255, 255, 0.12)',
+                paddingTop: 12,
+                marginTop: 6,
               }}>
                 <span>Total Due</span>
-                <span style={{ color: '#38bdf8' }}>${finalTotal}</span>
+                <span style={{
+                  background: 'linear-gradient(135deg, #f43f5e 0%, #f59e0b 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  ${finalTotal}
+                </span>
               </div>
             </div>
           </div>
@@ -536,7 +551,7 @@ export const Checkout = () => {
       </div>
 
       <style>{`
-        @media (max-width: 850px) {
+        @media (max-width: 880px) {
           .checkout-grid {
             grid-template-columns: 1fr !important;
           }

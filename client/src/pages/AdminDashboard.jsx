@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Film, Video, Calendar, DollarSign, Users, Plus, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, Film, Video, Calendar, DollarSign, Users, Plus, Trash2, CheckCircle2, AlertCircle, Sparkles, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AdminDashboard = () => {
@@ -176,7 +176,7 @@ export const AdminDashboard = () => {
       const data = await res.json();
       if (!data.success) throw new Error(data.message || 'Failed to schedule show');
 
-      setMessage('Show scheduled successfully! 🎟️');
+      setMessage('Show scheduled successfully with 60-seat matrix! 🎟️');
       fetchData();
     } catch (err) {
       setError(err.message);
@@ -203,52 +203,55 @@ export const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 0', color: '#8b5cf6' }}>
-        Loading cinema management dashboard...
+      <div style={{ textAlign: 'center', padding: '120px 0', color: '#f43f5e', fontSize: '1.2rem' }}>
+        <Sparkles size={32} style={{ display: 'inline-block', marginBottom: 12 }} />
+        <div>Connecting to Cinema Command Center...</div>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 1300, margin: '40px auto 80px', padding: '0 24px' }}>
+    <div style={{ maxWidth: 1320, margin: '40px auto 90px', padding: '0 24px' }}>
       {/* Dashboard Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 32,
+        alignItems: 'flex-end',
+        marginBottom: 36,
         flexWrap: 'wrap',
-        gap: 16,
+        gap: 20,
       }}>
         <div>
-          <span className="badge badge-purple" style={{ marginBottom: 6 }}>
+          <span className="badge badge-ruby" style={{ marginBottom: 8 }}>
             SUPERADMIN PRIVILEGES
           </span>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#fff', marginTop: 4 }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#fff', marginTop: 4, letterSpacing: '-0.025em' }}>
             Cinema Command Center
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.95rem' }}>
-            Real-time management for movies, schedules, theatres, and ticket transactions
+          <p style={{ color: '#94a3b8', fontSize: '0.98rem', marginTop: 4 }}>
+            Box office analytics, scheduled multiplex screenings, and movie library management.
           </p>
         </div>
 
         {/* Tab Navigation */}
         <div style={{
           display: 'flex',
-          background: 'rgba(255, 255, 255, 0.05)',
-          padding: 4,
-          borderRadius: 12,
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(255, 255, 255, 0.04)',
+          padding: 5,
+          borderRadius: 14,
+          border: '1px solid rgba(255, 255, 255, 0.09)',
         }}>
           <button
             onClick={() => setActiveTab('overview')}
             style={{
-              padding: '8px 18px',
-              borderRadius: 8,
+              padding: '9px 20px',
+              borderRadius: 10,
               fontSize: '0.88rem',
-              fontWeight: 600,
-              background: activeTab === 'overview' ? 'var(--primary)' : 'transparent',
+              fontWeight: 700,
+              background: activeTab === 'overview' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'overview' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'overview' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
             Overview & Stats
@@ -256,12 +259,14 @@ export const AdminDashboard = () => {
           <button
             onClick={() => setActiveTab('movies')}
             style={{
-              padding: '8px 18px',
-              borderRadius: 8,
+              padding: '9px 20px',
+              borderRadius: 10,
               fontSize: '0.88rem',
-              fontWeight: 600,
-              background: activeTab === 'movies' ? 'var(--primary)' : 'transparent',
+              fontWeight: 700,
+              background: activeTab === 'movies' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'movies' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'movies' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
             Manage Movies ({movies.length})
@@ -269,12 +274,14 @@ export const AdminDashboard = () => {
           <button
             onClick={() => setActiveTab('shows')}
             style={{
-              padding: '8px 18px',
-              borderRadius: 8,
+              padding: '9px 20px',
+              borderRadius: 10,
               fontSize: '0.88rem',
-              fontWeight: 600,
-              background: activeTab === 'shows' ? 'var(--primary)' : 'transparent',
+              fontWeight: 700,
+              background: activeTab === 'shows' ? 'var(--primary-gradient)' : 'transparent',
               color: activeTab === 'shows' ? '#fff' : '#94a3b8',
+              boxShadow: activeTab === 'shows' ? '0 4px 14px var(--primary-glow)' : 'none',
+              transition: 'var(--transition)',
             }}
           >
             Schedule Shows ({shows.length})
@@ -284,34 +291,36 @@ export const AdminDashboard = () => {
 
       {message && (
         <div style={{
-          background: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
-          color: '#34d399',
-          padding: '12px 18px',
-          borderRadius: 12,
+          background: 'rgba(16, 185, 129, 0.18)',
+          border: '1px solid rgba(16, 185, 129, 0.35)',
+          color: '#6ee7b7',
+          padding: '14px 20px',
+          borderRadius: 'var(--radius-md)',
           marginBottom: 24,
           display: 'flex',
           alignItems: 'center',
-          gap: 10,
+          gap: 12,
+          fontWeight: 700,
         }}>
-          <CheckCircle2 size={18} />
+          <CheckCircle2 size={20} color="#34d399" />
           <span>{message}</span>
         </div>
       )}
 
       {error && (
         <div style={{
-          background: 'rgba(239, 68, 68, 0.15)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          color: '#f87171',
-          padding: '12px 18px',
-          borderRadius: 12,
+          background: 'rgba(239, 68, 68, 0.18)',
+          border: '1px solid rgba(239, 68, 68, 0.35)',
+          color: '#fca5a5',
+          padding: '14px 20px',
+          borderRadius: 'var(--radius-md)',
           marginBottom: 24,
           display: 'flex',
           alignItems: 'center',
-          gap: 10,
+          gap: 12,
+          fontWeight: 600,
         }}>
-          <AlertCircle size={18} />
+          <AlertCircle size={20} color="#f87171" />
           <span>{error}</span>
         </div>
       )}
@@ -322,92 +331,101 @@ export const AdminDashboard = () => {
           {/* KPI Metrics */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 20,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 22,
             marginBottom: 36,
           }}>
-            <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="glass-panel-elevated" style={{ padding: '26px', borderTop: '4px solid #10b981' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Total Revenue</span>
-                <DollarSign size={20} color="#34d399" />
+                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Box Office Revenue</span>
+                <div style={{ padding: 8, borderRadius: 10, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+                  <DollarSign size={20} />
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 900, color: '#34d399' }}>
+              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#34d399', letterSpacing: '-0.02em' }}>
                 ${stats?.totalRevenue?.toLocaleString() || 0}
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 4 }}>
-                Realized box office receipts
+              <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <TrendingUp size={14} color="#10b981" />
+                <span>Realized box office receipts</span>
               </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="glass-panel-elevated" style={{ padding: '26px', borderTop: '4px solid #0ea5e9' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Tickets Sold</span>
-                <Film size={20} color="#38bdf8" />
+                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tickets Sold</span>
+                <div style={{ padding: 8, borderRadius: 10, background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+                  <Film size={20} />
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 900, color: '#38bdf8' }}>
+              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#38bdf8', letterSpacing: '-0.02em' }}>
                 {stats?.totalTicketsSold || 0}
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 4 }}>
-                Across all IMAX & Atmos screens
+              <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 6 }}>
+                Across IMAX & Dolby screens
               </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="glass-panel-elevated" style={{ padding: '26px', borderTop: '4px solid #f43f5e' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Library Titles</span>
-                <Video size={20} color="#c084fc" />
+                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Library Titles</span>
+                <div style={{ padding: 8, borderRadius: 10, background: 'rgba(244, 63, 94, 0.15)', color: '#f43f5e' }}>
+                  <Video size={20} />
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 900, color: '#c084fc' }}>
+              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#fda4af', letterSpacing: '-0.02em' }}>
                 {stats?.totalMovies || 0}
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 4 }}>
-                Active in theatre distribution
+              <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 6 }}>
+                Active in cinema distribution
               </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="glass-panel-elevated" style={{ padding: '26px', borderTop: '4px solid #f59e0b' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Registered Users</span>
-                <Users size={20} color="#fbbf24" />
+                <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Registered Patrons</span>
+                <div style={{ padding: 8, borderRadius: 10, background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+                  <Users size={20} />
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 900, color: '#fbbf24' }}>
+              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#fbbf24', letterSpacing: '-0.02em' }}>
                 {stats?.totalUsers || 0}
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 4 }}>
+              <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 6 }}>
                 Verified customer accounts
               </div>
             </div>
           </div>
 
           {/* Recent Bookings Ledger Table */}
-          <div className="glass-panel" style={{ padding: '28px', overflowX: 'auto' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: 18 }}>
-              Recent Ticket Transactions
+          <div className="glass-panel-elevated" style={{ padding: '30px', overflowX: 'auto' }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 900, color: '#fff', marginBottom: 20 }}>
+              Recent Box Office Transactions
             </h3>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: 600 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: 640 }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase' }}>
-                  <th style={{ padding: '12px 14px' }}>Ref #</th>
-                  <th style={{ padding: '12px 14px' }}>Customer</th>
-                  <th style={{ padding: '12px 14px' }}>Movie</th>
-                  <th style={{ padding: '12px 14px' }}>Theatre</th>
-                  <th style={{ padding: '12px 14px' }}>Seats</th>
-                  <th style={{ padding: '12px 14px' }}>Amount</th>
-                  <th style={{ padding: '12px 14px' }}>Status</th>
+                <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', color: '#94a3b8', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <th style={{ padding: '14px 16px' }}>Ref #</th>
+                  <th style={{ padding: '14px 16px' }}>Customer</th>
+                  <th style={{ padding: '14px 16px' }}>Movie</th>
+                  <th style={{ padding: '14px 16px' }}>Theatre</th>
+                  <th style={{ padding: '14px 16px' }}>Seats</th>
+                  <th style={{ padding: '14px 16px' }}>Amount</th>
+                  <th style={{ padding: '14px 16px' }}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {stats?.recentBookings?.map((b) => (
-                  <tr key={b._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', fontSize: '0.88rem' }}>
-                    <td style={{ padding: '14px', fontWeight: 700, color: '#fff' }}>{b.bookingNumber}</td>
-                    <td style={{ padding: '14px', color: '#cbd5e1' }}>{b.user}</td>
-                    <td style={{ padding: '14px', color: '#38bdf8' }}>{b.movie}</td>
-                    <td style={{ padding: '14px', color: '#94a3b8' }}>{b.theatre}</td>
-                    <td style={{ padding: '14px', fontWeight: 700, color: '#c084fc' }}>{b.seats?.join(', ')}</td>
-                    <td style={{ padding: '14px', fontWeight: 700, color: '#34d399' }}>${b.totalAmount}</td>
-                    <td style={{ padding: '14px' }}>
-                      <span className={`badge ${b.bookingStatus === 'confirmed' ? 'badge-emerald' : 'badge-gold'}`}>
+                  <tr key={b._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', fontSize: '0.9rem' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 800, color: '#fff' }}>{b.bookingNumber}</td>
+                    <td style={{ padding: '14px 16px', color: '#cbd5e1' }}>{b.user}</td>
+                    <td style={{ padding: '14px 16px', color: '#fda4af', fontWeight: 700 }}>{b.movie}</td>
+                    <td style={{ padding: '14px 16px', color: '#94a3b8' }}>{b.theatre}</td>
+                    <td style={{ padding: '14px 16px', fontWeight: 800, color: '#6ee7b7' }}>{b.seats?.join(', ')}</td>
+                    <td style={{ padding: '14px 16px', fontWeight: 800, color: '#fff' }}>${b.totalAmount}</td>
+                    <td style={{ padding: '14px 16px' }}>
+                      <span className={`badge ${b.bookingStatus === 'confirmed' ? 'badge-emerald' : 'badge-ruby'}`}>
                         {b.bookingStatus}
                       </span>
                     </td>
@@ -423,108 +441,110 @@ export const AdminDashboard = () => {
       {activeTab === 'movies' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 32 }} className="admin-grid">
           {/* Add Movie Form */}
-          <div className="glass-panel" style={{ padding: '26px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Plus size={18} color="#8b5cf6" />
+          <div className="glass-panel-elevated" style={{ padding: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Plus size={18} color="#f43f5e" />
               <span>Add New Blockbuster</span>
             </h3>
 
-            <form onSubmit={handleAddMovie} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <form onSubmit={handleAddMovie} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div>
-                <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Movie Title</label>
+                <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Movie Title</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Gladiator II"
+                  placeholder="e.g. Dune: Part Two"
                   value={movieForm.title}
                   onChange={(e) => setMovieForm({ ...movieForm, title: e.target.value })}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                  className="input-field"
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Synopsis / Description</label>
+                <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Synopsis / Storyline</label>
                 <textarea
                   rows={3}
                   required
-                  placeholder="Enter compelling movie storyline..."
+                  placeholder="Enter compelling movie description..."
                   value={movieForm.description}
                   onChange={(e) => setMovieForm({ ...movieForm, description: e.target.value })}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none', resize: 'vertical' }}
+                  className="input-field"
+                  style={{ resize: 'vertical' }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Poster Image URL</label>
+                <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Poster Image URL</label>
                 <input
                   type="url"
                   required
-                  placeholder="https://..."
+                  placeholder="https://images.unsplash.com/..."
                   value={movieForm.poster}
                   onChange={(e) => setMovieForm({ ...movieForm, poster: e.target.value })}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                  className="input-field"
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Genres (comma sep)</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Genres (comma-sep)</label>
                   <input
                     type="text"
                     value={movieForm.genre}
                     onChange={(e) => setMovieForm({ ...movieForm, genre: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Duration (mins)</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Duration (mins)</label>
                   <input
                     type="number"
                     value={movieForm.duration}
                     onChange={(e) => setMovieForm({ ...movieForm, duration: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Status</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Status</label>
                   <select
                     value={movieForm.status}
                     onChange={(e) => setMovieForm({ ...movieForm, status: e.target.value })}
-                    style={{ width: '100%', background: '#121622', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
+                    style={{ background: '#131926' }}
                   >
                     <option value="now_showing">Now Showing</option>
                     <option value="coming_soon">Coming Soon</option>
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>IMDb Rating</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>IMDb Rating</label>
                   <input
                     type="number"
                     step="0.1"
                     value={movieForm.rating}
                     onChange={(e) => setMovieForm({ ...movieForm, rating: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
               </div>
 
-              <button type="submit" className="btn-primary" style={{ marginTop: 10, justifyContent: 'center' }}>
-                <Plus size={16} />
-                <span>Save Movie to Database</span>
+              <button type="submit" className="btn-primary" style={{ marginTop: 12, justifyContent: 'center', padding: '13px' }}>
+                <Plus size={17} />
+                <span>Save Movie to Library</span>
               </button>
             </form>
           </div>
 
           {/* Current Movies List */}
-          <div className="glass-panel" style={{ padding: '26px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: 18 }}>
+          <div className="glass-panel-elevated" style={{ padding: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: 20 }}>
               Active Movie Library ({movies.length})
             </h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxHeight: 600, overflowY: 'auto' }}>
               {movies.map((m) => (
                 <div
                   key={m._id}
@@ -532,32 +552,39 @@ export const AdminDashboard = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '12px 16px',
-                    borderRadius: 12,
+                    padding: '14px 18px',
+                    borderRadius: 'var(--radius-md)',
                     background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.07)',
+                    gap: 14,
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                    <img src={m.poster} alt={m.title} style={{ width: 45, height: 65, borderRadius: 6, objectFit: 'cover' }} />
+                    <img src={m.poster} alt={m.title} style={{ width: 48, height: 68, borderRadius: 8, objectFit: 'cover' }} />
                     <div>
-                      <div style={{ fontWeight: 700, color: '#fff' }}>{m.title}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
-                        {m.duration}m • {m.genre?.join(', ')} • {m.status}
+                      <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.96rem' }}>{m.title}</div>
+                      <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>
+                        {m.duration}m • {m.genre?.join(', ')}
                       </div>
+                      <span className={`badge ${m.status === 'now_showing' ? 'badge-emerald' : 'badge-ruby'}`} style={{ marginTop: 6, fontSize: '0.65rem' }}>
+                        {m.status === 'now_showing' ? 'Now Showing' : 'Coming Soon'}
+                      </span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => handleDeleteMovie(m._id)}
                     style={{
-                      background: 'rgba(239, 68, 68, 0.15)',
+                      background: 'rgba(239, 68, 68, 0.12)',
                       border: '1px solid rgba(239, 68, 68, 0.3)',
                       color: '#f87171',
-                      padding: 8,
-                      borderRadius: 8,
+                      padding: 10,
+                      borderRadius: 10,
                       cursor: 'pointer',
+                      transition: 'var(--transition)',
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.25)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'}
                     title="Delete Movie"
                   >
                     <Trash2 size={16} />
@@ -573,19 +600,20 @@ export const AdminDashboard = () => {
       {activeTab === 'shows' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 32 }} className="admin-grid">
           {/* Add Show Form */}
-          <div className="glass-panel" style={{ padding: '26px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Calendar size={18} color="#8b5cf6" />
+          <div className="glass-panel-elevated" style={{ padding: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Calendar size={18} color="#f43f5e" />
               <span>Schedule New Show</span>
             </h3>
 
-            <form onSubmit={handleAddShow} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <form onSubmit={handleAddShow} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div>
-                <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Select Movie</label>
+                <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Select Movie</label>
                 <select
                   value={showForm.movieId}
                   onChange={(e) => setShowForm({ ...showForm, movieId: e.target.value })}
-                  style={{ width: '100%', background: '#121622', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                  className="input-field"
+                  style={{ background: '#131926' }}
                 >
                   {movies.map((m) => (
                     <option key={m._id} value={m._id}>{m.title}</option>
@@ -594,11 +622,12 @@ export const AdminDashboard = () => {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Select Multiplex Theatre</label>
+                <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Select Multiplex Theatre</label>
                 <select
                   value={showForm.theatreId}
                   onChange={(e) => setShowForm({ ...showForm, theatreId: e.target.value })}
-                  style={{ width: '100%', background: '#121622', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                  className="input-field"
+                  style={{ background: '#131926' }}
                 >
                   {theatres.map((t) => (
                     <option key={t._id} value={t._id}>{t.name} ({t.city})</option>
@@ -606,35 +635,36 @@ export const AdminDashboard = () => {
                 </select>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Show Date</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Show Date</label>
                   <input
                     type="date"
                     value={showForm.showDate}
                     onChange={(e) => setShowForm({ ...showForm, showDate: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Show Time</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Show Time</label>
                   <input
                     type="text"
                     value={showForm.showTime}
                     placeholder="e.g. 08:15 PM"
                     onChange={(e) => setShowForm({ ...showForm, showTime: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Format</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Screen Format</label>
                   <select
                     value={showForm.format}
                     onChange={(e) => setShowForm({ ...showForm, format: e.target.value })}
-                    style={{ width: '100%', background: '#121622', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
+                    style={{ background: '#131926' }}
                   >
                     <option value="IMAX 3D">IMAX 3D</option>
                     <option value="2D">2D</option>
@@ -643,60 +673,63 @@ export const AdminDashboard = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: 4 }}>Screen Name</label>
+                  <label style={{ fontSize: '0.8rem', color: '#cbd5e1', display: 'block', marginBottom: 6, fontWeight: 700 }}>Screen Name</label>
                   <input
                     type="text"
                     value={showForm.screenName}
                     onChange={(e) => setShowForm({ ...showForm, screenName: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', color: '#fff', outline: 'none' }}
+                    className="input-field"
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
                 <div>
-                  <label style={{ fontSize: '0.75rem', color: '#fbbf24', display: 'block', marginBottom: 4 }}>VIP Price ($)</label>
+                  <label style={{ fontSize: '0.74rem', color: '#fbbf24', display: 'block', marginBottom: 4, fontWeight: 700 }}>VIP Price ($)</label>
                   <input
                     type="number"
                     value={showForm.vipPrice}
                     onChange={(e) => setShowForm({ ...showForm, vipPrice: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '8px 10px', color: '#fff', outline: 'none' }}
+                    className="input-field"
+                    style={{ padding: '10px' }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.75rem', color: '#c084fc', display: 'block', marginBottom: 4 }}>Prem Price ($)</label>
+                  <label style={{ fontSize: '0.74rem', color: '#fda4af', display: 'block', marginBottom: 4, fontWeight: 700 }}>Prem Price ($)</label>
                   <input
                     type="number"
                     value={showForm.premiumPrice}
                     onChange={(e) => setShowForm({ ...showForm, premiumPrice: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '8px 10px', color: '#fff', outline: 'none' }}
+                    className="input-field"
+                    style={{ padding: '10px' }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.75rem', color: '#38bdf8', display: 'block', marginBottom: 4 }}>Std Price ($)</label>
+                  <label style={{ fontSize: '0.74rem', color: '#7dd3fc', display: 'block', marginBottom: 4, fontWeight: 700 }}>Std Price ($)</label>
                   <input
                     type="number"
                     value={showForm.standardPrice}
                     onChange={(e) => setShowForm({ ...showForm, standardPrice: e.target.value })}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '8px 10px', color: '#fff', outline: 'none' }}
+                    className="input-field"
+                    style={{ padding: '10px' }}
                   />
                 </div>
               </div>
 
-              <button type="submit" className="btn-primary" style={{ marginTop: 10, justifyContent: 'center' }}>
-                <Plus size={16} />
+              <button type="submit" className="btn-primary" style={{ marginTop: 12, justifyContent: 'center', padding: '13px' }}>
+                <Plus size={17} />
                 <span>Publish Show & Generate 60 Seats</span>
               </button>
             </form>
           </div>
 
           {/* Current Shows List */}
-          <div className="glass-panel" style={{ padding: '26px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: 18 }}>
+          <div className="glass-panel-elevated" style={{ padding: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: 20 }}>
               Active Scheduled Shows ({shows.length})
             </h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxHeight: 600, overflowY: 'auto' }}>
               {shows.map((s) => (
                 <div
                   key={s._id}
@@ -704,20 +737,21 @@ export const AdminDashboard = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '12px 16px',
-                    borderRadius: 12,
+                    padding: '14px 18px',
+                    borderRadius: 'var(--radius-md)',
                     background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.07)',
+                    gap: 14,
                   }}
                 >
                   <div>
-                    <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem' }}>
+                    <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.98rem' }}>
                       {s.movie?.title}
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: 2 }}>
+                    <div style={{ fontSize: '0.82rem', color: '#94a3b8', marginTop: 3 }}>
                       {s.theatre?.name} • {s.showDate} at {s.showTime}
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#c084fc', marginTop: 2 }}>
+                    <div style={{ fontSize: '0.76rem', color: '#fda4af', marginTop: 4, fontWeight: 700 }}>
                       {s.format} • VIP: ${s.pricing?.vip} / Std: ${s.pricing?.standard}
                     </div>
                   </div>
@@ -725,13 +759,16 @@ export const AdminDashboard = () => {
                   <button
                     onClick={() => handleDeleteShow(s._id)}
                     style={{
-                      background: 'rgba(239, 68, 68, 0.15)',
+                      background: 'rgba(239, 68, 68, 0.12)',
                       border: '1px solid rgba(239, 68, 68, 0.3)',
                       color: '#f87171',
-                      padding: 8,
-                      borderRadius: 8,
+                      padding: 10,
+                      borderRadius: 10,
                       cursor: 'pointer',
+                      transition: 'var(--transition)',
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.25)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'}
                     title="Delete Show"
                   >
                     <Trash2 size={16} />
@@ -744,7 +781,7 @@ export const AdminDashboard = () => {
       )}
 
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
           .admin-grid {
             grid-template-columns: 1fr !important;
           }
